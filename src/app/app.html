@@ -1,0 +1,96 @@
+<ion-menu [content]="nav1">
+    <ion-header>
+        <ion-toolbar color="primary" padding style="text-align: center;">
+            <span style="font-size: 5em;"><ion-icon name="home"></ion-icon></span>
+            <ion-title><small>Ihite Mobile </small></ion-title>
+        </ion-toolbar>
+    </ion-header>
+    <ion-content>
+        <ion-item no-lines (click)="goHome()"><ion-icon name="home" padding end></ion-icon> Home</ion-item>
+        <!--<ion-item (click)="pushPage('AboutPage')"><ion-icon name="persons" padding end></ion-icon> About Us</ion-item>
+        -->
+        <ion-item no-lines (click)="pushPageWithParameters('LoginModalPage', {langcode: LangCode})"><ion-icon name="person" padding></ion-icon> Login</ion-item>
+        <ion-item no-lines (click)="pushPageWithParameters('UserprofilePage', {langcode: LangCode})"><ion-icon name="person" padding></ion-icon> My Profile</ion-item>
+        <ion-item no-lines (click)="pushPageWithParameters('AboutPage', {langcode: LangCode})"><ion-icon name="people" padding></ion-icon> About Us</ion-item>
+        <ion-item no-lines (click)="pushPageWithParameters('SpeechPage', {groupid: 1})"><ion-icon name="book" padding></ion-icon> Chairman Speech</ion-item>
+        <ion-item no-lines (click)="updateAppParameters()" ><ion-icon name="refresh" padding ></ion-icon> Refresh App</ion-item>
+
+
+        <div>
+        </div>
+    </ion-content>
+</ion-menu>
+<ion-nav [root]="rootPage" id="naw1" #nav1></ion-nav>
+
+<ion-footer>
+    <ion-toolbar color="primary">
+
+        <ion-grid id="footer-grid">
+
+            <ion-row id="searchuserdiv" #searchuserdiv *ngIf="displaySearchUserDiv">
+                <ion-col col-12>
+                    <button ion-button (click)="toggleDisplaySearchUserDiv()">
+                    <ion-icon name="close"></ion-icon>
+                    </button>
+
+
+                    <ion-row>
+                        <ion-col col-12>
+                            <div *ngIf="!VerifiedUser.loadingState"><ion-spinner name="bubbles"></ion-spinner></div>
+                            <div id="verifyicondiv"><ion-icon [name]="VerifiedUser.verifyicon" padding></ion-icon> {{VerifiedUser.message}}</div>
+
+                            <div *ngIf="showVerificationData; then userfound; else nouserfound"></div>
+                            <ng-template #nouserfound>
+                                <ion-row>
+                                    <ion-col col-12>
+                                        <p>Enter New Social ID and Verify</p>
+                                    </ion-col>
+                                </ion-row>
+                            </ng-template>
+
+                            <ng-template #userfound>
+
+                            <ion-row *ngFor="let vu of VerifiedUser.user" style="text-align: right;">
+                            <ion-col col-3>
+                                <div><img [src]="httpservice.hostdomain+vu.profilepic" class="avatar" /> </div>
+                                <div></div>
+                            </ion-col>
+                            <ion-col col-9>
+                                <div>
+                                    <small>Bio: {{vu.firstname + ', '+vu.surname +' | '+vu.grouplevel3name +' | '+vu.grouplevel2name +' | '+vu.grouplevel3name}}</small><br>
+                                    <small>Position: {{vu.rolename+' | '+vu.rolenote}} </small>
+                                </div>
+                                <div>Verified To Enjoy:</div>
+                                <div *ngFor="let sw of VerifiedUserSocialWelfares" color="secondary">
+                                <div (click)="pushPageWithParametersOutsideMenu('ClusterPage', {clusterid: sw.clusterid})">
+                                <sup><ion-icon [name]="VerifiedUser.verifyicon"></ion-icon></sup> {{sw.clustername}}
+                                </div>
+                                </div>
+                            </ion-col>
+                            </ion-row>
+                            </ng-template>
+
+                </ion-col>
+            </ion-row>
+                </ion-col>
+                <ion-col col-9>
+                    <ion-item no-lines color="secondary">
+                        <ion-input [(ngModel)]="SocialId" type="number" placeholder="Enter Social ID to Verify"></ion-input>
+                    </ion-item>
+                </ion-col>
+                <ion-col col-3>
+                    <ion-item no-lines color="primary">
+                        <button ion-button slot="end" (click)="verifyUser()">
+                            <ion-icon name="magnifier">Verify</ion-icon>
+                        </button>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col col-4> <ion-icon name="home" padding (click)="goHomeOutsideMenu()"></ion-icon></ion-col>
+                <ion-col col-4> <ion-icon name="book" padding (click)="pushPageWithParametersOutsideMenu('ArticlesPage', {property: 'category.id', value: 2, 'property-alias': 'Announcemets And News' })"></ion-icon></ion-col>
+                <ion-col col-4 id="footer-search-col"> <ion-icon name="search" padding (click)="toggleDisplaySearchUserDiv()"></ion-icon></ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-toolbar>
+</ion-footer>

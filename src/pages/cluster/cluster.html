@@ -1,0 +1,52 @@
+<!--
+  Generated template for the ClusterPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>{{Cluster.clustername}}</ion-title>
+      <button ion-button menuToggle>
+          <ion-icon name="menu"></ion-icon>
+      </button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-grid>
+        <ion-row>
+            <ion-col col-3>
+                <ion-icon name="book" padding style="font-size: 4em;"></ion-icon>
+            </ion-col>
+            <ion-col col-9>
+                <h4>{{Cluster.clustername}}</h4>
+                <p padding>{{Cluster.clusternote}}</p>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col col-12>
+                <h5 padding>Announcements And News | <sub>{{Articles.message}}</sub></h5>
+            </ion-col>
+            <ion-col *ngFor="let a of Articles.articles">
+                <h5>{{a.categoryname}}</h5>
+                <div padding>
+                    <img src="{{httpservice.hostdomain+a.articleimagedisplayname}}"/>
+                </div>
+                <div>
+                    <p (click)="pushPageWithParameters('ArticlePage',{articleid: a.id})">{{a.title}}</p>
+                    <small><ion-icon padding name="eye"></ion-icon>{{a.noofviews}}
+                        | <ion-icon padding name="chat-box"></ion-icon>{{a.noofcomments}}</small>
+                </div>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col col-12>
+                <span *ngFor="let i of Articles.pagelistArray">
+                    <button ion-button (click)="getArticles(Cluster.clusterid,i)">{{i}}</button>
+                </span>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+</ion-content>

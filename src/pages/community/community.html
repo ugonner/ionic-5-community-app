@@ -1,0 +1,117 @@
+<!--
+  Generated template for the CommunityPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-title>Community</ion-title>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-grid>
+        <ion-row>
+            <ion-col col-3>
+                <ion-icon name="home" padding style="font-size: 4em;"></ion-icon>
+            </ion-col>
+            <ion-col col-9>
+                <ion-row>
+                    <ion-col col-12>
+                        <h3>{{Group.name}}</h3>
+                    </ion-col>
+                    <ion-col col-12>
+                        <p>
+                            {{Group.description}}
+                        </p>
+                    </ion-col>
+                </ion-row>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-item no-lines>
+        |<sub>{{ClassMessage}}</sub>
+
+    </ion-item>
+
+
+    <ion-item no-lines>
+        <span>Executive Members |<sub>{{Members.message}}</sub></span>
+    </ion-item>
+    <ion-slides #membersslides>
+    <ion-slide *ngFor="let m of Members.members">
+    <ion-grid>
+        <ion-row>
+            <ion-col col-3>
+                <ion-item no-lines>
+                    <ion-icon name="person"></ion-icon>
+                </ion-item>
+            </ion-col>
+            <ion-col col-9>
+                <ion-avatar circle>
+                    <img src="{{httpservice.hostdomain + m.profilepic}}" />
+                </ion-avatar>
+                <div>{{m.firstname + ', '+m.surname}}</div>
+                <div>{{m.rolename}}</div>
+                <div>{{m.rolenote}}</div>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    </ion-slide>
+    </ion-slides>
+
+    <ion-grid>
+
+        <ion-row>
+            <ion-col col-12>
+                <span *ngFor="let i of Members.pageListArray">
+                <button ion-button (click)="getMembers(executiveRoleid,i)">{{i}}</button>
+                </span>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+
+
+    <ion-item no-lines>
+        <h4>Announcements And News |<sub>{{Articles.message}}</sub></h4>
+    </ion-item>
+    <div #articlesslides>
+    <div *ngFor="let a of Articles.articles">
+    <ion-grid>
+        <ion-row>
+            <ion-col>
+                <h5><ion-icon name="book" padding></ion-icon> {{a.categoryname}}</h5>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <div>
+                    <img src="{{httpservice.hostdomain + a.articleimagedisplayname}}" />
+                </div>
+                <div padding (click)="pushPageWithParameters('ArticlePage',{Articleid: a.id})">{{a.title}}</div>
+                <small>{{a.dateofpublication}} | <ion-icon name="eye"></ion-icon> {{a.noofviews}}</small>
+            </ion-col>
+        </ion-row>
+
+    </ion-grid>
+    </div>
+    <ion-grid id="article-pagelist">
+        <ion-row>
+            <ion-col col-12>
+                <span *ngFor="let i of Articles.pageListArray">
+                <button ion-button (click)="getArticles(i)">{{i}}</button>
+                </span>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    </div>
+
+
+
+
+</ion-content>

@@ -1,0 +1,138 @@
+<!--
+  Generated template for the WelcomePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header xmlns="http://www.w3.org/1999/html">
+  <ion-toolbar color="primary">
+      <button ion-button icon-only menuToggle start>
+          <ion-icon name="menu"></ion-icon>
+      </button>
+    <ion-title>Welcome To Ihite App</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding style="color: white !important;">
+
+    <ion-grid color="primary" class="articlesdivs">
+        <ion-row>
+            <ion-col col-10  [hidden]="showSearchBox">
+                <ion-searchbar type="text" debounce="500" (ionInput)="searchUser($event)" color="primary"></ion-searchbar>
+
+                <div [hidden]="SearchedUsers.loadingState"><ion-spinner></ion-spinner></div>
+                <ion-grid *ngIf="showSearchResults; then usersfound; else nousersfound" color='secondary'>
+
+                </ion-grid>
+
+            </ion-col>
+            <ion-col col-2>
+                <span>
+                    <button ion-button (click)="toggleshowSearchBox()" padding>
+                        <ion-icon name="search"></ion-icon>
+                    </button>
+                </span>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <ng-template #usersfound>
+        <ion-row *ngFor="let u of SearchedUsers.users">
+            <ion-col col-3 padding>
+                <img class="avatar" src="{{httpservice.hostdomain + u.profilepic}}"/>
+            </ion-col>
+            <ion-col col-9 padding  (click)="pushPageWithParameters('UserprofilePage',{userid: u.id})">
+                {{u.firstname +" "+u.surname+", from "+ u.grouplevel1name+", "+ u.grouplevel2name+", "+ u.grouplevel3name}}
+            </ion-col>
+        </ion-row>
+    </ng-template>
+    <ng-template #nousersfound>
+        <ion-row>
+            <ion-col col-12>
+                {{SearchedUsers.message}}
+            </ion-col>
+        </ion-row>
+    </ng-template>
+    <ion-grid>
+        <ion-row>
+            <ion-col col-12>
+                <ion-segment>
+                    <ion-segment-button value="1"  (ionSelect)="displaySection = 1">
+                     Ihite Updates
+                    </ion-segment-button>
+                    <ion-segment-button value="2" (ionSelect)="displaySection = 2">
+                     Ihite Welfare Packages
+                    </ion-segment-button>
+                </ion-segment>
+                <ion-segment>
+                    <ion-segment-button value="3" (ionSelect)="displaySection = 3">
+                     Ihite Members
+                    </ion-segment-button>
+                    <ion-segment-button value="4" (ionSelect)="displaySection = 4">
+                     Ihite Wards
+                    </ion-segment-button>
+                </ion-segment>
+            </ion-col>
+        </ion-row>
+        <ion-row *ngIf="displaySection == 1">
+            <ion-col col-6 *ngFor="let c of Categories.allcategories" class="articlesdivs">
+            <h4><ion-icon name="book" padding></ion-icon></h4>
+            <button ion-button (click)="pushPageWithParameters('ArticlesPage',{'property': 'category.id','property-alias': c.name,'value': c.id})">
+                <small wrap>{{c.name}}</small>
+            </button>
+            </ion-col>
+        </ion-row>
+
+        <ion-row  *ngIf="displaySection == 2">
+            <ion-col col-4 *ngFor="let cl of Clusters" class="clustersdivs">
+            <div (click)="pushPageWithParameters('ClusterPage',{clusterid: cl.clusterid})">
+                <h4><ion-icon name="walk" padding></ion-icon></h4>
+                <small wrap>{{cl.clustername}}</small>
+            </div>
+            </ion-col>
+        </ion-row>
+
+        <ion-row  *ngIf="displaySection == 3">
+            <ion-col col-4 *ngFor="let r of Roles" class="rolesdivs">
+            <div (click)="pushPageWithParameters('UsersPage',{property: 'role.id',property_alias: r.name, value: r.id})">
+                <h4><ion-icon name="person" padding></ion-icon></h4>
+                <small> {{r.name}}</small>
+            </div>
+            </ion-col>
+        </ion-row>
+
+        <ion-row  *ngIf="displaySection == 4">
+            <ion-col col-6 *ngFor="let g1 of Group1s" class="groupsdivs">
+            <div  (click)="pushPageWithParameters('CommunityPage', {groupid: g1.id, groupleveltableid:g1.tableid})">
+                <h4><ion-icon name="home" padding></ion-icon></h4>
+                <small> {{g1.name}}</small>
+
+            </div>
+            <br><button ion-button  (click)="showGroup2sDiv('g2s'+g1.id)"> <small padding><ion-icon name="arrow-down"></ion-icon></small></button>
+            <div class="hiddeng2s" [id]="'g2s'+g1.id">
+                <div style="text-align: right;">
+                    <span (click)="hideGroup2sDiv('g2s'+g1.id)"><ion-icon name="close"></ion-icon></span>
+                </div>
+                <div *ngFor="let gg2 of g1.grouplevel2s">
+                    <div padding (click)="pushPageWithParameters('CommunityPage', {groupid: gg2.id, groupleveltableid:gg2.tableid})">
+                        <sub>{{gg2.name}}</sub>
+                    </div>
+                    <button ion-button  (click)="showGroup2sDiv('g3s'+gg2.id)"><small padding><ion-icon name="arrow-down"></ion-icon></small></button>
+                    <div class="hiddeng2s" [id]="'g3s'+gg2.id">
+                        <div style="text-align: right;">
+                            <span (click)="hideGroup2sDiv('g3s'+gg2.id)"><ion-icon name="close"></ion-icon></span>
+                        </div>
+                        <div *ngFor="let gg3 of gg2.grouplevel3s">
+                            <div padding (click)="pushPageWithParameters('CommunityPage', {groupid: gg3.id, groupleveltableid:gg3.tableid})">
+                                <small>{{gg3.name}}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-grid id="footer-separator-grid"></ion-grid>
+
+</ion-content>

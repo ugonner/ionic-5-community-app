@@ -1,0 +1,235 @@
+<!--
+  Generated template for the UserprofilePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header xmlns="http://www.w3.org/1999/html">
+  <ion-toolbar color="primary">
+    <ion-title>User Profile</ion-title>
+    <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+    </button>
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+                        <ion-item no-lines>
+                            <span *ngIf='IsOwner' (click)="toggleDisplayEditForm()" item-right>
+                            <ion-icon name="create" item-right></ion-icon><small>Edit Profile</small>
+                            </span>
+                        </ion-item>
+
+                <div *ngIf="DisplaySpinner" style="text-align: center;">
+                    <ion-spinner></ion-spinner><br>
+                    {{LoadingMessage}}
+                </div>
+
+                    <p>{{ClassMessage}}</p>
+
+
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col col-3>
+                                <!--image-->
+                                <div>
+                                    <div *ngIf='IsOwner' id="displayUserImage">
+                                    <ion-item no-lines (click)="displayFilePicker()">
+                                    <ion-avatar circle>
+                                        <img  id="userprofilepic" [src]="userdata.get('profilepic')">
+                                    </ion-avatar>
+                                    </ion-item>
+
+                                    <form method="post" name="imageForm"  enctype="multipart/form-data" hidden>
+                                        <ion-item no-lines >
+                                            <input  id="userprofilepicfile" #userprofilepicfile type="file" name="userprofilepic" accept="image\*">
+                                        </ion-item>
+                                        <input  id="userid" type="hidden" name="userid" value="{{userdata.get('id')}}" />
+
+                                    </form>
+                                </div>
+
+                                <!--if platform is android<-->
+                                <!--<div showWhen="android, ios">
+                                    <ion-item no-lines>
+                                        <ion-avatar circle (click)="selectCameraOptions()">
+                                        <img  id="userprofilepic" [src]="userdata.get('profilepic')">
+                                        </ion-avatar>
+                                    </ion-item>
+                                </div>-->
+                                <!--endif android or ios-->
+
+                                <div *ngIf="!IsOwner">
+                                <ion-item no-lines>
+                                    <ion-avatar circle>
+                                        <img [src]="userdata.get('profilepic')">
+                                    </ion-avatar>
+                                </ion-item>
+                                </div>
+                                </div>
+                            </ion-col>
+
+                            <ion-col col-9><h5>{{userdata.get('firstname') }} {{userdata.get('surname') }}</h5></ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col col-3> Position: </ion-col>
+                            <ion-col col-9>{{userdata.get('rolename') }}</ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col col-3> Post: </ion-col>
+                            <ion-col col-9>{{userdata.get('rolenote') }}</ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col col-3> Mobile: </ion-col>
+                            <ion-col col-9>{{userdata.get('mobile') }}</ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col col-3> Ward: </ion-col>
+                            <ion-col col-9>{{userdata.get('grouplevel1name') }}</ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col col-3> Village: </ion-col>
+                            <ion-col col-9>{{userdata.get('grouplevel2name') }}</ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col col-3> Kindred: </ion-col>
+                            <ion-col col-9>{{userdata.get('grouplevel3name') }}</ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col col-3> Locality: </ion-col>
+                            <ion-col col-9>{{userdata.get('locationname') }}</ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col col-3> Place: </ion-col>
+                            <ion-col col-9>{{userdata.get('sublocationname') }}</ion-col>
+                        </ion-row>
+                    </ion-grid>
+
+
+                <div [hidden]="DisplayEditForm">
+
+                        <div *ngIf="userdata.get('public') == 'Y'">
+                        <ion-icon padding name="call"></ion-icon> Mobile <b>{{userdata.get("mobile")}}</b>
+                        <div [hidden]="DisplayEditForm">
+                        <ion-input #usermobile type="text" name='mobile' placeholder='mobile' value="{{userdata.get('mobile')}}" required >
+                        </ion-input>
+                        <ion-item (click)='editUser("mobile",usermobile.value)'>
+                        <ion-icon item-right name="play" small>  Save</ion-icon>
+                        </ion-item>
+                        </div>
+                        </div>
+
+
+                        <div>
+                            <ion-icon padding name="card"></ion-icon> Firstname: <b>{{userdata.get("firstname")}}</b>
+                            <div [hidden]="DisplayEditForm">
+                            <ion-input #userfirstname type="text" name='firstname' placeholder='First Name' required value="{{userdata.get('firstname')}}">
+                            </ion-input>
+                            <ion-item (click)='editUser("firstname",userfirstname.value)'>
+                            <ion-icon name="play" small item-right >Save</ion-icon>
+                            </ion-item>
+                        </div>
+                        </div>
+
+
+                        <div>
+                            <ion-icon padding name="card"></ion-icon> Surname <b>{{userdata.get("surname")}}</b>
+                            <div [hidden]="DisplayEditForm">
+                            <ion-input #usersurname type="text" name='surname' placeholder='Surname' required  value="{{userdata.get('surname')}}">
+                            </ion-input>
+
+                            <ion-item (click)='editUser("surname",usersurname.value)' small >
+                            <ion-icon name="play" item-right  small>Save</ion-icon>
+                            </ion-item>
+                        </div>
+                        </div>
+
+                        <div>
+                            <ion-icon padding name="card"></ion-icon> Ward <b>{{userdata.get("grouplevel1name")}}</b>
+                            <div [hidden]="DisplayEditForm">
+                            <ion-item>
+                                <ion-select #usergrouplevel1 placeholder='{{userdata.get("grouplevel1name")}}' >
+                                <ion-option *ngFor="let grp1 of groups.grouplevel1s" value='{{grp1.id}}'>{{grp1.name}}</ion-option>
+                                </ion-select>
+                            </ion-item>
+
+                            <ion-item (click)='editUser("grouplevel1id",usergrouplevel1.value)' small >
+                            <ion-icon name="save" item-right  small>Save</ion-icon>
+                            </ion-item>
+                        </div>
+                        </div>
+
+                        <div>
+                            <ion-icon padding name="card"></ion-icon> Village <b>{{userdata.get("grouplevel2name")}}</b>
+                            <div [hidden]="DisplayEditForm">
+                            <ion-item>
+                                <ion-select #usergrouplevel2 placeholder='{{userdata.get("grouplevel2name")}}' >
+                                <ion-option *ngFor="let grp2 of groups.grouplevel2s" value='{{grp2.id}}'>{{grp2.name}}</ion-option>
+                                </ion-select>
+                            </ion-item>
+
+                            <ion-item (click)='editUser("grouplevel2id",usergrouplevel2.value)' small >
+                            <ion-icon name="save" item-right  small>Save</ion-icon>
+                            </ion-item>
+                        </div>
+                        </div>
+
+                        <div>
+                            <ion-icon padding name="card"></ion-icon> Kindred <b>{{userdata.get("grouplevel3name")}}</b>
+                            <div [hidden]="DisplayEditForm">
+                            <ion-item>
+                                <ion-select #usergrouplevel3 placeholder='{{userdata.get("grouplevel3name")}}' >
+                                <ion-option *ngFor="let grp3 of groups.grouplevel3s" value='{{grp3.id}}'>{{grp3.name}}</ion-option>
+                                </ion-select>
+                            </ion-item>
+
+                            <ion-item (click)='editUser("grouplevel3id",usergrouplevel3.value)' small >
+                            <ion-icon name="save" item-right  small>Save</ion-icon>
+                            </ion-item>
+                        </div>
+                        </div>
+
+
+                        <div>
+                            <ion-icon name="globe" padding></ion-icon> Location: <b> {{userdata.get("locationname")}}</b><br/>
+                            <ion-icon name="globe" padding></ion-icon> Place: <b> {{userdata.get("sublocationname")}}</b>
+                            <div [hidden]="DisplayEditForm">
+                            <ion-item>
+                                <ion-select #userstate (ionChange)='getLgas(userstate.value)' name='location' placeholder='{{userdata.get("state")}}' >
+                                <ion-option *ngFor="let s of UserLocations" value='{{s.id}}'>{{s.name}}</ion-option>
+                                </ion-select>
+                            </ion-item>
+                            <ion-item>
+                                <ion-select #userlga name='lga' placeholder='Select LGA' [(ngModel)]='lgaid' >
+                                <ion-option *ngFor="let l of UserSublocations" value='{{l.id}}'>{{l.name}}</ion-option>
+                                </ion-select>
+                            </ion-item>
+                            <ion-item (click)='editUser("location",{"locationid":userstate.value,"sublocationid":userlga.value})' small >
+                            <ion-icon item-right name="play" small>Save</ion-icon>
+                            </ion-item>
+                        </div>
+                        </div>
+
+
+
+                        <div [hidden]="DisplayEditForm" >
+                        <ion-label>Change the visibility of your mobile number</ion-label>
+                        <ion-item>
+                            <ion-select #public name='public'>
+                            <ion-option value="Y">Yes, Make Visible</ion-option>
+                            <ion-option value="N">No, Don't</ion-option>
+                            </ion-select>
+                        </ion-item>
+                        <ion-item (click)='editUser("public",public.value)' small >
+                        <ion-icon item-right name="play" small>Save</ion-icon>
+                        </ion-item>
+                        </div>
+                        <ion-item no-lines>
+                            <ion-icon name="globe" padding></ion-icon>
+                        </ion-item>
+               </div>
+
+</ion-content>

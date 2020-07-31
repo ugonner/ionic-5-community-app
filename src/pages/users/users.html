@@ -1,0 +1,48 @@
+<!--
+  Generated template for the UsersPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-title>{{Property_alias}}</ion-title>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-grid>
+        <ion-row>
+            <ion-col col-12>
+                <h4>{{Property_alias}}</h4>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col col-12>
+                <!--<span padding *ngFor="let pg of "-->
+            </ion-col>
+            <ion-col col-6 *ngFor="let u of Users; let i = index">
+                <div>
+                    <img src="{{httpservice.hostdomain + u.profilepic}}" />
+                </div>
+                <div (click)="pushPageWithParameters('UserprofilePage', {userid: u.id})">
+                    <h5>{{u.firstname +', '+u.surname}}</h5>
+                    <small><sub>{{u.rolename +" | "+u.rolenote}}</sub></small>
+                    <br><small><sub>{{u.grouplevel1name +" | "+u.grouplevel2name+" | "+u.grouplevel3name}}</sub></small>
+                </div>
+
+            </ion-col>
+        </ion-row>
+
+        <ion-row>
+            <ion-col col-12>
+                <span *ngFor="let i of pageListArray">
+                <button ion-button (click)="getUsers(Property,Property_alias,Value,i)">{{i}}</button>
+                </span>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>
